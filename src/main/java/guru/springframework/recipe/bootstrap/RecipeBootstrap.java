@@ -18,7 +18,9 @@ import guru.springframework.recipe.model.UnitOfMeasure;
 import guru.springframework.recipe.repositories.CategoryRepository;
 import guru.springframework.recipe.repositories.RecipeRepository;
 import guru.springframework.recipe.repositories.UnitOfMeasureRepository;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Component
 public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEvent> {
 
@@ -38,6 +40,8 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
 	}
 	
 	private List<Recipe> getRecipes() { 
+		
+		log.debug("Starting recipe bootstrap...");
 		
 		List<Recipe> recipes = new ArrayList<>();
 		
