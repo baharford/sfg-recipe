@@ -1,9 +1,15 @@
 package guru.springframework.recipe.services;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -28,9 +34,31 @@ class RecipeServiceImplTest {
 		
 		recipeService = new RecipeServiceImpl(recipeRepository);
 	}
+
+	@Test
+	void getRecipeByIdTest() throws Exception {
+		
+		Recipe recipe = new Recipe();
+		recipe.setId(1L);
+		Optional<Recipe> recipeOptional = Optional.of(recipe);
+		
+		when(recipeRepository.findById(anyLong())).thenReturn(recipeOptional);
+		
+		
+		HashSet recipeData = new HashSet();
+		recipeData.add(recipe);
+		
+		Mockito.when(recipeRepository.findAll()).thenReturn(recipeData);
+		
+		Recipe recipeReturned = recipeService.findById(1L);
+		
+		assertNotNull(recipeReturned, "Null recipe returned");
+		verify(recipeRepository, times(1)).findById(anyLong());
+		verify(recipeRepository, never()).findAll();
+	}
 	
 	@Test
-	void test() {
+	void getRecipesTest() throws Exception {
 		
 		Recipe recipe = new Recipe();
 		HashSet recipeData = new HashSet();
